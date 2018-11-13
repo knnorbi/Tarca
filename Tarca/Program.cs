@@ -13,15 +13,52 @@ namespace Tarca
     class Pénztárca
     {
         /// <summary>
-        /// A pénztárca értéke.
+        /// A pénztárcában lévő címletek darabszáma.
         /// </summary>
-        int osszeg;
+        int[] cimletek = new int[12];
 
         /// <summary>
-        /// Beteszi a pénztárcába a paraméterül adott összeget.
+        /// A címletek névértékei.
         /// </summary>
-        /// <param name="penz">Beteendő összeg.</param>
-        public void Betesz(int penz) { osszeg += penz; }
+        int[] ertekek = new int[]
+        {
+            5,10,20,50,100,200,500,
+            1000,2000,5000,10000,20000
+        };
+
+        /// <summary>
+        /// A pénztárcában található pénzek összértéke.
+        /// </summary>
+        public int Osszeg
+        {
+            get
+            {
+                int osszeg = 0;
+                for (int i = 0; i < cimletek.Length; i++)
+                {
+                    osszeg += ertekek[i] * cimletek[i];
+                }
+                return osszeg;
+            }
+        }
+
+        public void Betesz(int darab, int cimlet)
+        {
+            cimletek[cimlet] += darab;
+        }
+
+        public void Betesz(int[] cimletek)
+        {
+            for (int i = 0; i < cimletek.Length; i++)
+            {
+                this.cimletek[i] += cimletek[i];
+            }
+        }
+
+        public void Betesz(int osszeg)
+        {
+
+        }
 
         /// <summary>
         /// Kiveszi a pénztárcából a paraméterül adott összeget,
@@ -29,13 +66,13 @@ namespace Tarca
         /// </summary>
         /// <param name="penz">Kiveendő összeg.</param>
         /// <returns>A kivétel sikeressége.</returns>
-        public bool Kivesz(int penz)
-        {
-            if (penz > osszeg)
-                return false;
-            osszeg -= penz;
-            return true;
-        }
+        //public bool Kivesz(int penz)
+        //{
+        //    if (penz > osszeg)
+        //        return false;
+        //    osszeg -= penz;
+        //    return true;
+        //}
 
         /// <summary>
         /// Karakterlánccá alakítja az osztályt, ami tartalmazza
@@ -44,7 +81,7 @@ namespace Tarca
         /// <returns>Karakterlánc.</returns>
         public override string ToString()
         {
-            return "A pénztárcában " + osszeg + " forint van.";
+            return "A pénztárcában " + Osszeg + " forint van.";
         }
 
         class Program
@@ -53,9 +90,8 @@ namespace Tarca
             {
                 Pénztárca p1 = new Pénztárca();
                 Pénztárca p2 = new Pénztárca();
-                p1.Betesz(50);
-                p1.Kivesz(49);
-                p1.Kivesz(20);
+                p1.Betesz(5, 11);
+                p1.Betesz(new int[] { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
                 Console.WriteLine(p1);
                 Console.ReadKey();
             }
